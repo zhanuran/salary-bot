@@ -21,9 +21,16 @@ SHEET_SEND_LOG = 'SendLog'
 class SheetsClient:
     def __init__(self):
         self.config = Config()
-        creds = Credentials.from_service_account_file(
-            self.config.GOOGLE_CREDS_FILE, scopes=SCOPES
-        )
+        import os, json
+        creds_json = os.getenv('GOOGLE_CREDENTIALS_JSON')
+        if creds_json:
+            creds = Credentials.from_service_account_info(
+                json.loads(creds_json), scopes=SCOPES
+            )
+        else:
+            creds = Credentials.from_service_account_file(
+                self.config.GOOGLE_CREDS_FILE, scopes=SCOPES
+            )
         self.gc = gspread.authorize(creds)
         self.spreadsheet = self.gc.open_by_key(self.config.SHEET_ID)
         self._ensure_sheets_exist()
