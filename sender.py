@@ -35,12 +35,15 @@ class SalarySender:
 
         logger.info(f"Рассылка начата: {month}, {len(messages)} получателей")
 
+        # Загружаем один раз список уже отправленных (экономит API запросы)
+        already_sent_ids = self.sheets.get_already_sent_ids(month)
+
         for item in messages:
             chat_id = item['chat_id']
             message = item['message']
 
             # Пропускаем уже отправленных
-            if self.sheets.is_already_sent(chat_id, month):
+            if chat_id in already_sent_ids:
                 skipped += 1
                 continue
 
@@ -91,14 +94,15 @@ class SalarySender:
 
     async def _send_one(self, chat_id: str, message: str, month: str) -> dict:
         """Отправляет одно сообщение, обрабатывает все ошибки."""
+        # callback_data лимит 64 символа — используем короткий формат
         keyboard = InlineKeyboardMarkup([[
             InlineKeyboardButton(
                 'Ризамын ✅',
-                callback_data=f'feedback|{chat_id}|{month}|Ризамын'
+                callback_data=f'fb|{chat_id}|1'
             ),
             InlineKeyboardButton(
                 'Риза емеспін ❌',
-                callback_data=f'feedback|{chat_id}|{month}|Риза емеспін'
+                callback_data=f'fb|{chat_id}|0'
             )
         ]])
 

@@ -54,9 +54,18 @@ async def handle_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = query.data
     parts = data.split('|')
-    if parts[0] != 'feedback' or len(parts) < 4:
+    # Поддержка обоих форматов: старого (feedback|id|month|answer) и нового (fb|id|0/1)
+    if parts[0] == 'fb' and len(parts) >= 3:
+        chat_id = parts[1]
+        month = sheets.get_last_sent_month(chat_id)
+        answer = 'Ризамын' if parts[2] == '1' else 'Риза емеспін'
+    elif parts[0] == 'feedback' and len(parts) >= 4:
+        chat_id = parts[1]
+        month = parts[2]
+        answer = parts[3]
+    else:
         return
-    _, chat_id, month, answer = parts[0], parts[1], parts[2], parts[3]
+
     name = sheets.get_name(chat_id)
     if answer == 'Ризамын':
         sheets.save_feedback(chat_id, name, month, 'Ризамын ✅', '')

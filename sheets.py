@@ -88,6 +88,22 @@ class SheetsClient:
     # Зарплатные сообщения (лист по имени месяца)
     # ─────────────────────────────────────────────
 
+    def get_last_sent_month(self, chat_id: str) -> str:
+        ws = self.spreadsheet.worksheet(SHEET_SEND_LOG)
+        rows = ws.get_all_values()[::-1]
+        for row in rows:
+            if len(row) >= 3 and str(row[0]) == str(chat_id):
+                return row[2]
+        return 'белгісіз'
+
+    def get_already_sent_ids(self, month: str) -> set:
+        ws = self.spreadsheet.worksheet(SHEET_SEND_LOG)
+        rows = ws.get_all_values()[1:]
+        return {
+            str(row[0]) for row in rows
+            if len(row) >= 4 and row[2] == month and row[3].startswith('✅')
+        }
+
     def get_salary_messages(self, month: str) -> list[dict]:
         """
         Читает фиксированный лист 'Рассылка'.
