@@ -103,7 +103,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     args = context.args
     month = ' '.join(args) if args else None
@@ -122,7 +122,7 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_retry(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     args = context.args
     month = ' '.join(args) if args else None
@@ -139,7 +139,7 @@ async def cmd_retry(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     args = context.args
     month = ' '.join(args) if args else None
@@ -160,7 +160,7 @@ async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_dept_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     args = context.args
     month = ' '.join(args) if args else None
@@ -185,7 +185,7 @@ async def cmd_dept_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_complaints(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     args = context.args
     month = ' '.join(args) if args else None
@@ -206,7 +206,7 @@ async def cmd_complaints(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_stats_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     all_stats = sheets.get_all_months_stats()
     lines = ["📊 *Барлық айлар бойынша статистика*\n"]
@@ -219,7 +219,7 @@ async def cmd_stats_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_employees(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     employees = sheets.get_all_employees()
     total = len(employees)
@@ -234,7 +234,7 @@ async def cmd_employees(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if str(update.effective_chat.id) != str(config.ADMIN_CHAT_ID):
+    if str(update.effective_chat.id) not in [str(x) for x in config.ADMIN_CHAT_IDS]:
         return
     text = (
         "🤖 *Жалақы бот — командалар*\n\n"

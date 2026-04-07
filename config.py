@@ -14,7 +14,8 @@ if creds:
 class Config:
     # Telegram
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
-    ADMIN_CHAT_ID: str = os.getenv('ADMIN_CHAT_ID', '')
+    ADMIN_CHAT_IDS: list = [x.strip() for x in os.getenv('ADMIN_CHAT_ID', '').split(',') if x.strip()]
+    ADMIN_CHAT_ID: str = os.getenv('ADMIN_CHAT_ID', '').split(',')[0].strip()  # первый = главный
     FINANCE_CHAT_IDS: list = [x.strip() for x in os.getenv('FINANCE_CHAT_ID', '').split(',') if x.strip()]
 
     # Google Sheets
